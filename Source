@@ -1,5 +1,126 @@
-//NewOne//
-# Checking in new source
-2nd Check
-3rd Check
-4th url
+#include<iostream>
+#include<math.h>
+#include<stdlib.h>
+#include<time.h>
+ 
+using namespace std;
+int main(){
+    int jmax=1000; // maximum value of HIT number. (Length of output file)
+    int imax=1000; // maximum value of random numbers for producing HITs.
+    double x,y;    // Coordinates
+    int hit;       // storage variable of number of HITs
+    srand(time(0));
+    for (int j=0;j<jmax;j++){
+        hit=0;
+        x=0; y=0;
+        for(int i=0;i<imax;i++){
+            x=double(rand())/double(RAND_MAX);
+            y=double(rand())/double(RAND_MAX);
+        if(y<=sqrt(1-pow(x,2))) hit+=1; }          //Choosing HITs according to analytic formula of circle
+    cout<<""<<4*double(hit)/double(imax)<<endl; }  // Print out Pi number
+}
+2-) To understand the code: We have just 2 loops here. The inner loop produce random number (<1) and uses these numbers for coordinates x,y. “If” condition increases hit number if this (x,y) point locates in the area of quarter circle (Look at the figure below.)
+
+
+Hit Production Area
+
+The outer loop resets our variables and print out Pi number according to formula: Area of Quarter Circle/ Area of Square = (1/4)πr2/r2 = (1/4)π= accepted hits / total hits = hits / imax.
+
+3-) Run it as “./pi.x > pi.dat”
+
+4-) Draw output file.
+
+
+Pi Graph
+
+I used below “root macro” to read and convert it to a .root file.
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+{
+    gROOT->Reset();
+    ifstream in;
+    in.open("pi.dat");
+    Float_t x; Int_t nlines = 0;
+    TFile *f = new TFile("pi1.root","RECREATE");
+    TH1F *h1 = new TH1F("h1","pi_grafik",100,2.5,4.0);
+    TNtuple *ntuple = new TNtuple("ntuple","pi","x");
+    for (nlines=0; nlines<10000; nlines++) {
+        in >> x;
+        if (!in.good()) {break;}
+        if (nlines < 5) {printf("x=%5f\n",x);}
+        h1->Fill(x);
+        ntuple->Fill(x);
+        nlines++;
+    }
+    in.close();
+    f->Write();
+    printf("%d deger bulundu\n",nlines);
+    h1->SetXTitle("pi");
+    h1->SetYTitle("Olay");
+    h1->Draw();
+}
+Paste above root macro in a C file and name it as “pintuple.c”
+Open your root analysis program in the same directory you saved pintuple.c : “root”
+Execute the file: “root> .x pintuple.c”
+You’ll get an ntuple file called “pi1.root”
+Write “TBrowser g” in root.
+Open pi1.root file and you’ll get the above histogram. Congratulations 🙂
+Rate this:7 Votes
+Share this:
+TwitterFacebookReddit
+
+Related
+Fastest Way to Calculate Hadronic Cross Sections
+October 27, 2010
+In "Physics"
+Abbreviations at CERN
+October 11, 2009
+In "Listings"
+Installing Scientific Packages on Mac OS X
+August 11, 2009
+In "Physics"
+Tags: Root, Simulation
+
+
+About Kuday
+Pure Mind
+View all posts by Kuday »
+« Previous post
+Next post »
+Leave a Reply
+Enter your comment here...
+AUTHOR: SINAN KUDAY
+Profile İmage
+Click image to visit my personal site.
+
+CALENDAR
+May 2010
+M	T	W	T	F	S	S
+ 	1	2
+3	4	5	6	7	8	9
+10	11	12	13	14	15	16
+17	18	19	20	21	22	23
+24	25	26	27	28	29	30
+31	 
