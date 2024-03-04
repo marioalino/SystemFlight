@@ -1,6 +1,6 @@
 #include<iostream> 
 #include<math.h>
-#include<stdlib.h> //Standard Library 1234
+#include<stdlib.h> //Standard Library 12344
 #include<time.h>  //time function x
  
 using namespace std; //simulate
